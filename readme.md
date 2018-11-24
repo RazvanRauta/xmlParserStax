@@ -1,4 +1,4 @@
-#Xml parser using StAX
+# Xml parser using StAX
 
 It's parsing a file with product orders and creating new files with the products sorted by the supplier.
 Input File: 
