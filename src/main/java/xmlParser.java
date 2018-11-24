@@ -45,7 +45,7 @@ public class xmlParser {
     }
 
 
-    public static List<Product> parseXML(String fileName) {
+    static List<Product> parseXML(String fileName) {
         List<Product> products = new ArrayList<>();
         Order order = null;
         Product product = null;
@@ -57,27 +57,41 @@ public class xmlParser {
                 XMLEvent xmlEvent = xmlEventReader.nextEvent();
                 if (xmlEvent.isStartElement()) {
                     StartElement startElement = xmlEvent.asStartElement();
-                    if (startElement.getName().getLocalPart().equals("order")) {
-                        order = new Order();
 
-                        Attribute idAttr = startElement.getAttributeByName(new QName("ID"));
-                        if (idAttr != null) {
-                            order.setOrderId(Integer.parseInt(idAttr.getValue()));
-                        }
-                    } else if (startElement.getName().getLocalPart().equals("product")) {
-                        product = new Product();
-                    } else if (startElement.getName().getLocalPart().equals("description")) {
-                        xmlEvent = xmlEventReader.nextEvent();
-                        product.setDescription(xmlEvent.asCharacters().getData());
-                    } else if (startElement.getName().getLocalPart().equals("gtin")) {
-                        xmlEvent = xmlEventReader.nextEvent();
-                        product.setGtin(Long.parseLong(xmlEvent.asCharacters().getData()));
-                    } else if (startElement.getName().getLocalPart().equals("price")) {
-                        xmlEvent = xmlEventReader.nextEvent();
-                        product.setPrice(Double.parseDouble(xmlEvent.asCharacters().getData()));
-                    } else if (startElement.getName().getLocalPart().equals("supplier")) {
-                        xmlEvent = xmlEventReader.nextEvent();
-                        product.setSupplier(xmlEvent.asCharacters().getData());
+                    switch (startElement.getName().getLocalPart().toLowerCase()) {
+
+                        case "order":
+                            order = new Order();
+
+                            Attribute idAttr = startElement.getAttributeByName(new QName("ID"));
+                            if (idAttr != null) {
+                                order.setOrderId(Integer.parseInt(idAttr.getValue()));
+                            }
+                            break;
+
+                        case "product":
+                            product = new Product();
+                            break;
+                        case "description":
+                            xmlEvent = xmlEventReader.nextEvent();
+                            product.setDescription(xmlEvent.asCharacters().getData());
+                            break;
+                        case "gtin":
+                            xmlEvent = xmlEventReader.nextEvent();
+                            product.setGtin(Long.parseLong(xmlEvent.asCharacters().getData()));
+                            break;
+                        case "price":
+                            xmlEvent = xmlEventReader.nextEvent();
+                            product.setPrice(Double.parseDouble(xmlEvent.asCharacters().getData()));
+                            break;
+
+                        case "supplier":
+                            xmlEvent = xmlEventReader.nextEvent();
+                            product.setSupplier(xmlEvent.asCharacters().getData());
+                            break;
+
+                        default:
+                            break;
                     }
                 }
 
@@ -91,25 +105,24 @@ public class xmlParser {
             }
 
 
-        } catch (FileNotFoundException | XMLStreamException e) {
+        } catch (FileNotFoundException | XMLStreamException | NullPointerException e) {
             e.printStackTrace();
         }
         return products;
     }
 
-    public static void writeXml(List<Product> products, String orderNumber) {
+    static void writeXml(List<Product> products, String orderNumber) {
         List<List<Product>> myList = sortedList(products);
         for (List<Product> list : myList) {
             for (Product product : list) {
 
                 try {
-                    StringWriter stringWriter = new StringWriter();
 
                     XMLOutputFactory xMLOutputFactory = XMLOutputFactory.newInstance();
                     XMLStreamWriter xMLStreamWriter = new IndentingXMLStreamWriter
                             (xMLOutputFactory.createXMLStreamWriter(new FileOutputStream(outPutDir + "/" + product.getSupplier() + orderNumber + ".xml")));
 
-                    xMLStreamWriter.writeStartDocument("UTF-8","1.0");
+                    xMLStreamWriter.writeStartDocument("UTF-8", "1.0");
                     xMLStreamWriter.writeStartElement("products");
                     for (Product product1 : list) {
 
@@ -124,6 +137,7 @@ public class xmlParser {
                         xMLStreamWriter.writeEndElement();
 
                         xMLStreamWriter.writeStartElement("price");
+                        xMLStreamWriter.writeAttribute("currency", "USD");
                         xMLStreamWriter.writeCharacters(String.valueOf(product1.getPrice()));
                         xMLStreamWriter.writeEndElement();
 
@@ -131,57 +145,56 @@ public class xmlParser {
                         xMLStreamWriter.writeCharacters(String.valueOf(product1.getOrdeId()));
                         xMLStreamWriter.writeEndElement();
 
+                        xMLStreamWriter.writeEndElement();
+
                     }
 
-                    xMLStreamWriter.writeEndElement();
-
-
                     xMLStreamWriter.writeEndDocument();
-
 
                     xMLStreamWriter.flush();
                     xMLStreamWriter.close();
 
-                    String xmlString = stringWriter.getBuffer().toString();
-
-                    stringWriter.close();
-
-                    System.out.println(xmlString);
-
-                } catch (XMLStreamException e) {
-                    e.printStackTrace();
-                } catch (IOException e) {
+                } catch (XMLStreamException | IOException e) {
                     e.printStackTrace();
                 }
-
-                System.out.println("File created");
             }
+
         }
+        System.out.println("Files were created in outputFolder!");
 
     }
 
-    public static List<List<Product>> sortedList(List<Product> productList) {
+    private static List<List<Product>> sortedList(List<Product> productList) {
         List<Product> sony = new ArrayList<>();
         List<Product> apple = new ArrayList<>();
         List<Product> panasonic = new ArrayList<>();
         List<List<Product>> sorted = new ArrayList<>();
+        List<Product> newSupplier = new ArrayList<>();
         for (Product product : productList) {
-            if (product.getSupplier().equalsIgnoreCase("Sony")) {
 
-                sony.add(product);
+            switch (product.getSupplier().toLowerCase()) {
 
-            } else if (product.getSupplier().equalsIgnoreCase("Apple")) {
-                apple.add(product);
-
-            } else if (product.getSupplier().equalsIgnoreCase("Panasonic")) {
-
-                panasonic.add(product);
+                case "sony":
+                    sony.add(product);
+                    break;
+                case "apple":
+                    apple.add(product);
+                    break;
+                case "panasonic":
+                    panasonic.add(product);
+                default:
+                    newSupplier = new ArrayList<>();
+                    newSupplier.add(product);
+                    break;
             }
 
+            sorted.add(sony);
+            sorted.add(apple);
+            sorted.add(panasonic);
+            sorted.add(newSupplier);
+
+
         }
-        sorted.add(sony);
-        sorted.add(panasonic);
-        sorted.add(apple);
 
         return sorted;
 

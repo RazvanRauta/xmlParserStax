@@ -33,5 +33,17 @@
             <price currency="USD">999.99</price>
             <supplier>Panasonic</supplier>
         </product>
+        <product>
+            <description>Bose Headphones</description>
+            <gtin>00885170076471</gtin>
+            <price currency="USD">300</price>
+            <supplier>Bose</supplier>
+        </product>
+        <product>
+            <description>JBL Charge 2</description>
+            <gtin>00885170076471</gtin>
+            <price currency="USD">100</price>
+            <supplier>JBL</supplier>
+        </product>
     </order>
 </orders>
