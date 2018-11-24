@@ -50,39 +50,40 @@ Output files:
   <product>
     <description>Apple iPad 2 with Wi-Fi 16GB - iOS 5 - Black</description>
     <gtin>885909464517</gtin>
-    <price>399.0</price>
+    <price currency="USD">399.0</price>
     <orderId>2343</orderId>
-    <product>
-      <description>Apple MacBook Air A 11.6" Mac OS X v10.7 Lion MacBook</description>
-      <gtin>885909464043</gtin>
-      <price>1149.0</price>
-      <orderId>2344</orderId>
-    </product></product></products>
-    </myxml>
+  </product>
+  <product>
+    <description>Apple MacBook Air A 11.6" Mac OS X v10.7 Lion MacBook</description>
+    <gtin>885909464043</gtin>
+    <price currency="USD">1149.0</price>
+    <orderId>2344</orderId>
+  </product></products>
  
     
 <?xml version="1.0" encoding="UTF-8"?>
 <products>
-   <product>
-      <description>Sony 54.6" (Diag) Xbr Hx929 Internet Tv</description>
-        <gtin>27242816657</gtin>
-        <price>2999.99</price>
-        <orderId>2343</orderId>
-        <product>
-          <description>Sony NWZ-E464 8GB E Series Walkman Video MP3 Player Blue</description>
-          <gtin>27242831438</gtin>
-          <price>91.99</price>
-          <orderId>2343</orderId>
-        </product></product></products>
+  <product>
+    <description>Sony 54.6" (Diag) Xbr Hx929 Internet Tv</description>
+    <gtin>27242816657</gtin>
+    <price currency="USD">2999.99</price>
+    <orderId>2343</orderId>
+  </product>
+  <product>
+    <description>Sony NWZ-E464 8GB E Series Walkman Video MP3 Player Blue</description>
+    <gtin>27242831438</gtin>
+    <price currency="USD">91.99</price>
+    <orderId>2343</orderId>
+  </product></products>
         
 <?xml version="1.0" encoding="UTF-8"?>
- <products>
-          <product>
-            <description>Panasonic TC-L47E50 47" Smart TV Viera E50 Series LED HDTV</description>
-            <gtin>885170076471</gtin>
-            <price>999.99</price>
-            <orderId>2344</orderId>
-          </product></products>
+<products>
+  <product>
+    <description>Panasonic TC-L47E50 47" Smart TV Viera E50 Series LED HDTV</description>
+    <gtin>885170076471</gtin>
+    <price currency="USD">999.99</price>
+    <orderId>2344</orderId>
+  </product></products>
  </myxml>
  ```
  
